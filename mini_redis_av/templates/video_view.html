@@ -1,0 +1,19 @@
+<!--Pagina dettaglio video-->
+
+{% extends "layout.html" %}
+{% block content %}
+
+<h2 class="mb-4">Dettagli Video</h2>
+
+{% if thumb %}
+    <img src="data:image/jpeg;base64,{{ thumb }}" class="img-fluid mb-3 shadow">
+{% endif %}
+
+<h4>Metadata</h4>
+<pre class="bg-white p-3 border rounded">
+{{ meta | tojson(indent=2) }}
+</pre>
+
+<a class="btn btn-secondary mt-3" href="/">Torna indietro</a>
+
+{% endblock %}
