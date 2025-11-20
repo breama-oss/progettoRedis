@@ -1,38 +1,52 @@
-📘 Mini Redis AV Server
-Python + Flask + Redis + FFmpeg
+<p align="center">
+  <a href="#"><img src="https://raw.githubusercontent.com/breama-oss/progettoRedis/main/logo.png" alt="Mini Redis AV Server" width="180"></a>
+</p>
 
-Mini Redis AV Server è un progetto didattico che combina backend Python, processing multimediale, Redis come database key–value e una UI web semplice in italiano.
+<p align="center">
+    <em>Mini Redis AV Server – Processing video, metadata e API REST con Python, Flask, Redis e FFmpeg</em>
+</p>
 
-Consente di:
+<p align="center">
+<a href="#"><img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version"></a>
+<a href="#"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
+<a href="#"><img src="https://img.shields.io/badge/status-stable-success" alt="Status"></a>
+</p>
 
-📤 Caricare file video
+---
 
-🧪 Estrarre metadata tramite ffprobe
+# 📘 Mini Redis AV Server
 
-🖼️ Generare thumbnail JPEG tramite ffmpeg
+Mini Redis AV Server è un progetto didattico che combina backend Python, processing multimediale con FFmpeg, database Redis e una UI web semplice.
 
-🗄️ Salvare i dati in Redis (reale)
+## ✨ Funzionalità principali
 
-🌐 Esporre API REST
+- 📤 Caricare file video  
+- 🧪 Estrarre metadata tramite **ffprobe**  
+- 🖼️ Generare thumbnail JPEG tramite **ffmpeg**  
+- 🗄️ Salvare dati in **Redis**  
+- 🌐 Esporre API REST  
+- 🖥️ Offrire una dashboard HTML minimale  
 
-🖥️ Fornire una dashboard HTML minimale
+---
 
-È un esempio completo di:
-✔ backend Flask • ✔ Redis • ✔ multimedia processing • ✔ REST API • ✔ UI web
+# 🧰 Requisiti
 
-🧰 Requisiti
+| Componente | Versione minima | Verifica |
+|-----------|------------------|----------|
+| Python | ≥ 3.9 | `python3 --version` |
+| Redis | ≥ 7.0 | `redis-cli ping` |
+| FFmpeg | ≥ 4.0 | `ffmpeg -version` |
+| pip + venv | sì | `pip --version` |
 
-Assicurati di avere installato:
+---
 
-Componente	Richiesto	Verifica
-Python	≥ 3.9	python3 --version
-Redis	≥ 7.0	redis-cli ping
-FFmpeg	≥ 4.0	ffmpeg -version
-pip + venv	sì	pip --version
-🚀 Installazione
-1️⃣ Clona il progetto
+# 🚀 Installazione
+
+## 1️⃣ Clona il progetto
+```bash
 git clone https://github.com/breama-oss/progettoRedis.git
 cd progettoRedis
+```
 
 2️⃣ Crea ambiente virtuale
 
