@@ -1,10 +1,6 @@
-Mini Redis AV Server
-
-Descrizione generale
-
 Mini Redis AV Server è un progetto didattico che permette di caricare file video, analizzarli tramite FFmpeg/ffprobe, generare thumbnail, salvare i metadati in Redis ed esporre un’interfaccia web e API REST tramite Flask.
 
-Funzionalità principali
+## Funzionalità principali
 
 Caricamento file video
 
@@ -18,13 +14,21 @@ API REST
 
 Dashboard HTML minimale
 
-Requisiti
-Componente	Versione minima	Verifica
-Python	≥ 3.9	python3 --version
-Redis	≥ 7.0	redis-cli ping
-FFmpeg	≥ 4.0	ffmpeg -version
-pip + venv	sì	pip --version
-Installazione
+
+## Requisiti
+  
+  Versione minima
+  Python	≥ 3.9	
+  python3 --version
+  Redis	≥ 7.0	
+  redis-cli ping
+  FFmpeg	≥ 4.0	
+  ffmpeg -version
+  pip + venv	sì	
+  pip --version
+
+## Installazione
+  
 1. Clona il progetto
 git clone https://github.com/breama-oss/progettoRedis.git
 cd progettoRedis
@@ -46,9 +50,10 @@ python -m venv venv
 pip install -r requirements.txt
 
 4. Installa Redis
-Windows (consigliato WSL2)
 
-Redis non è supportato nativamente su Windows.
+- Windows (consigliato WSL2)
+
+Redis non è supportato nativamente su Windows. Segui questi comandi:
 
 wsl --install
 wsl
@@ -63,11 +68,12 @@ Output atteso:
 PONG
 
 macOS (Homebrew)
+
 brew install redis
 brew services start redis
 redis-cli ping
 
-Architettura del progetto
+## Architettura del progetto
 mini_redis_av/
 ├── http_server.py        # Server Flask (API + UI)
 ├── av_processor.py       # ffprobe, ffmpeg, thumbnail Base64
@@ -78,7 +84,7 @@ mini_redis_av/
 │   └── video_view.html
 └── uploads/
 
-Avvio del server
+## Avvio del server
 
 macOS / Linux
 
@@ -94,11 +100,9 @@ cd mini_redis_av
 python.exe http_server.py
 
 
-Server attivo:
+## Server attivo:
 
-http://127.0.0.1:5000
-
-Interfaccia Web
+http://127.0.0.1:5000 --> Interfaccia Web
 
 Homepage
 http://localhost:5000/
@@ -113,10 +117,10 @@ metadata
 
 pulsante elimina
 
-Upload Web
-http://localhost:5000/upload_form
+## Upload Web
 
-API REST
+
+
 1. Caricare un video
 curl -F "file=@/percorso/video.mp4" http://localhost:5000/upload_form
 
@@ -140,12 +144,13 @@ curl http://localhost:5000/video/<video_id>/thumb -o thumb.jpg
 5. Eliminare un video
 curl -X DELETE http://localhost:5000/video/<video_id>
 
-Struttura delle chiavi Redis
-Chiave	Contenuto
-video:<id>	Metadati JSON
-video:<id>:thumb	Thumbnail Base64
-video:<id>:path	Percorso file locale
-Test manuale
+- Struttura delle chiavi Redis:
+Chiave ||	Contenuto
+video:<id> ||	Metadati JSON
+video:<id>:thumb ||	Thumbnail Base64
+video:<id>:path ||	Percorso file locale
+
+- Test manuale
 redis-cli
 KEYS video:*
 GET video:<id>
