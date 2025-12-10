@@ -1,160 +1,299 @@
-Mini Redis AV Server è un progetto didattico che permette di caricare file video, analizzarli tramite FFmpeg/ffprobe, generare thumbnail, salvare i metadati in Redis ed esporre un’interfaccia web e API REST tramite Flask.
+### Mini Redis AV Server Python + Flask + Redis + FFmpeg
+
+Mini Redis AV Server è un progetto didattico che consente di caricare file video, analizzarli tramite FFmpeg/ffprobe, generare thumbnail, salvare i metadati in Redis ed esporre una semplice interfaccia web e API REST tramite Flask.
+
+
+
+  
 
 ## Funzionalità principali
 
-Caricamento file video
+  
 
-Estrazione metadata tramite ffprobe
+- Caricare file video
 
-Generazione thumbnail JPEG via ffmpeg
+- Estrarre metadata tramite ffprobe
 
-Salvataggio dati in Redis
+- Generare thumbnail JPEG tramite ffmpeg
 
-API REST
+- Salvare i dati in Redis (reale)
 
-Dashboard HTML minimale
+- Esporre API REST
 
+- Fornire una dashboard HTML minimale
+
+---
 
 ## Requisiti
-  
-  Versione minima
-  Python	≥ 3.9	
-  python3 --version
-  Redis	≥ 7.0	
+
+Assicurati di avere installato:
+
+1. Python	≥ 3.9
+
+Per verificare:
+  ```bash
+	python3 --version
+  ```
+
+2. Redis	≥ 7.0
+
+  ```bash
   redis-cli ping
-  FFmpeg	≥ 4.0	
-  ffmpeg -version
-  pip + venv	sì	
-  pip --version
+  ```
+
+3. FFmpeg ≥ 4.0
+
+```bash	
+ffmpeg -version
+```
+
+4. pip	
+
+```bash
+pip --version
+```
+
+---
+
 
 ## Installazione
-  
+
 1. Clona il progetto
+
+```bash
 git clone https://github.com/breama-oss/progettoRedis.git
+
 cd progettoRedis
+```
 
-2. Crea l’ambiente virtuale
+2. Crea ambiente virtuale
 
-macOS / Linux
+*macOS / Linux*
 
+```bash
 python3 -m venv venv
+
 source venv/bin/activate
+```
 
+*Windows (PowerShell)*
 
-Windows (PowerShell)
-
+```bash
 python -m venv venv
 .\venv\Scripts\Activate.ps1
+```
 
 3. Installa le dipendenze Python
+
+```bash
 pip install -r requirements.txt
+```
 
 4. Installa Redis
 
-- Windows (consigliato WSL2)
+*Windows (consigliato: WSL2)*
 
-Redis non è supportato nativamente su Windows. Segui questi comandi:
+  
 
+Redis non è supportato nativamente su Windows.
+
+Si consiglia WSL2 + Ubuntu.
+
+  
+
+- Apri PowerShell come amministratore:
+
+```bash
 wsl --install
+```
+
+Riavvia Windows se richiesto.
+
+- Avvia Ubuntu:
+
 wsl
+
+
+- Installa Redis:
+
+```bash
 sudo apt update
+
 sudo apt install redis-server
+```
+
+
+- Avvia:
+
+```bash
 sudo service redis-server start
+```
+
+
+- Test:
+
+```bash
 redis-cli ping
+```
 
+Dovresti ottenere:
 
-Output atteso:
-
+```bash
 PONG
+```
 
-macOS (Homebrew)
+*macOS (Homebrew)*
 
+```bash
 brew install redis
+
 brew services start redis
+```
+
+
+- Test:
+
+```bash
 redis-cli ping
+```
+
+---
 
 ## Architettura del progetto
 mini_redis_av/
-├── http_server.py        # Server Flask (API + UI)
-├── av_processor.py       # ffprobe, ffmpeg, thumbnail Base64
-├── database.py           # Wrapper per Redis
-├── templates/
-│   ├── index.html
-│   ├── upload.html
-│   └── video_view.html
-└── uploads/
+│── http_server.py        # Server Flask con API e UI
+│── av_processor.py       # ffprobe + ffmpeg + Base64 thumb
+│── database.py           # Wrapper per Redis
+│── templates/
 
-## Avvio del server
+│     ├── index.html
 
-macOS / Linux
+│     ├── upload.html
 
+│     └── video\_view.html
+
+│── uploads/
+
+  
+
+---
+
+## Avvio del Server
+
+Assicurati che Redis sia attivo, poi:
+
+*macOS / Linux*
+
+```bash
 source venv/bin/activate
 cd mini_redis_av
 python3 http_server.py
+```
 
 
-Windows PowerShell
+*Windows PowerShell*
 
+```bash
 .\venv\Scripts\Activate.ps1
 cd mini_redis_av
 python.exe http_server.py
+```
 
+Server attivo su:
 
-## Server attivo:
+```bash
+http://127.0.0.1:5000
+```
 
-http://127.0.0.1:5000 --> Interfaccia Web
-
-Homepage
-http://localhost:5000/
-
-Mostra:
+La homepage mostra:
 
 elenco video caricati
 
-thumbnail
+  
 
-metadata
+thumbnail 
+
+metadata 
 
 pulsante elimina
 
-## Upload Web
+---
 
+# Upload tramite web UI
+```bash
+http://localhost:5000/upload_form
+```
 
+Oppure cliccando il pulsante "Carica"
+
+---
+
+# API REST
 
 1. Caricare un video
-curl -F "file=@/percorso/video.mp4" http://localhost:5000/upload_form
 
+```bash
+curl -F "file=@/percorso/video.mp4" http://localhost:5000/upload_form
+```
 
 Risposta:
 
+```bash
 {
-  "key": "video:<id>",
-  "meta": { }
+
+  "key": "video:<uuid>",
+
+  "meta": { ... }
+
 }
+```
 
-2. Lista dei video
+2. Lista di tutti i video
+
+```bash
 curl http://localhost:5000/videos
+```
 
-3. Metadati JSON
+3. Metadati JSON formattati
+
+```bash
 curl http://localhost:5000/meta/<video_id>
+```
 
 4. Thumbnail JPEG
-curl http://localhost:5000/video/<video_id>/thumb -o thumb.jpg
+
+```bash
+curl http://localhost:5000/video/<uuid>/thumb -o thumb.jpg
+```
 
 5. Eliminare un video
-curl -X DELETE http://localhost:5000/video/<video_id>
 
-- Struttura delle chiavi Redis:
-Chiave ||	Contenuto
-video:<id> ||	Metadati JSON
-video:<id>:thumb ||	Thumbnail Base64
-video:<id>:path ||	Percorso file locale
+```bash
+curl -X DELETE http://localhost:5000/video/<uuid>
+```
 
-- Test manuale
-redis-cli
-KEYS video:*
-GET video:<id>
+Risposta:
 
-Licenza
+```bash
+{
+  "deleted_keys": 3,
+  "video_id": "<uuid>"
+}
+```
 
-MIT — uso libero per studio, demo e sviluppo.
+---
+
+## Struttura delle chiavi Redis
+
+Ogni video genera:
+
+Chiave	Contenuto
+video:<uuid>	Metadata JSON
+video:<uuid>:thumb	Thumbnail Base64
+video:<uuid>:path	Percorso file locale
+
+---
+
+## Licenza
+
+**MIT** — libero uso per studio e sviluppo.
