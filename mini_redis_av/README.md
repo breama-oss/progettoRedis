@@ -31,15 +31,16 @@ Assicurati di avere installato:
 1. Python	≥ 3.9
 
 Per verificare:
-  ```bash
-	python3 --version
-  ```
+
+```bash
+python3 --version
+```
 
 2. Redis	≥ 7.0
 
-  ```bash
-  redis-cli ping
-  ```
+```bash
+redis-cli ping
+```
 
 3. FFmpeg ≥ 4.0
 
@@ -111,8 +112,9 @@ Riavvia Windows se richiesto.
 
 - Avvia Ubuntu:
 
+```bash
 wsl
-
+```
 
 - Installa Redis:
 
@@ -144,6 +146,8 @@ PONG
 
 *macOS (Homebrew)*
 
+- Installazione:
+
 ```bash
 brew install redis
 
@@ -157,24 +161,32 @@ brew services start redis
 redis-cli ping
 ```
 
+Dovresti ottenere:
+
+```bash
+PONG
+```
+
 ---
 
 ## Architettura del progetto
+
+
 mini_redis_av/
-│── http_server.py        # Server Flask con API e UI
-│── av_processor.py       # ffprobe + ffmpeg + Base64 thumb
-│── database.py           # Wrapper per Redis
+│── av_processor.py        
+│── commands.py       
+│── database.py           
 │── templates/
-
 │     ├── index.html
-
 │     ├── upload.html
-
 │     └── video\_view.html
-
 │── uploads/
+│── http_server.py       
+│── README.md
+│── requirements.txt        
+│── resp.py    
+│── server.py        
 
-  
 
 ---
 
@@ -208,8 +220,6 @@ http://127.0.0.1:5000
 La homepage mostra:
 
 elenco video caricati
-
-  
 
 thumbnail 
 
