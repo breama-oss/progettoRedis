@@ -1,8 +1,14 @@
 ### Mini Redis AV Server Python + Flask + Redis + FFmpeg
 
-Mini Redis AV Server è un progetto didattico che combina backend Python, processing multimediale, Redis come database key–value e una UI web semplice in italiano.
+Mini Redis AV Server è un progetto didattico che consente di caricare file video, analizzarli tramite FFmpeg/ffprobe, generare thumbnail, salvare i metadati in Redis ed esporre una semplice interfaccia web e API REST tramite Flask.
 
-Consente di:
+
+
+  
+
+✨ Funzionalità principali
+
+  
 
 - Caricare file video
 
@@ -56,6 +62,7 @@ pip --version
 
 ```bash
 git clone https://github.com/breama-oss/progettoRedis.git
+
 cd progettoRedis
 ```
 
@@ -65,6 +72,7 @@ cd progettoRedis
 
 ```bash
 python3 -m venv venv
+
 source venv/bin/activate
 ```
 
@@ -85,8 +93,13 @@ pip install -r requirements.txt
 
 *Windows (consigliato: WSL2)*
 
-Redis non è più supportato nativamente per Windows.
-Si consiglia l’uso di WSL2 + Ubuntu.
+  
+
+Redis non è supportato nativamente su Windows.
+
+Si consiglia WSL2 + Ubuntu.
+
+  
 
 - Apri PowerShell come amministratore:
 
@@ -105,6 +118,7 @@ wsl
 
 ```bash
 sudo apt update
+
 sudo apt install redis-server
 ```
 
@@ -132,6 +146,7 @@ PONG
 
 ```bash
 brew install redis
+
 brew services start redis
 ```
 
@@ -150,10 +165,16 @@ mini_redis_av/
 │── av_processor.py       # ffprobe + ffmpeg + Base64 thumb
 │── database.py           # Wrapper per Redis
 │── templates/
-│     ├── index.html      # Lista video
-│     ├── upload.html     # Form upload
-│     └── video_view.html # Dettaglio video
-│── uploads/              # File video caricati
+
+│     ├── index.html
+
+│     ├── upload.html
+
+│     └── video\_view.html
+
+│── uploads/
+
+  
 
 ---
 
@@ -188,6 +209,8 @@ La homepage mostra:
 
 elenco video caricati
 
+  
+
 thumbnail 
 
 metadata 
@@ -217,8 +240,11 @@ Risposta:
 
 ```bash
 {
-  "key": "video:<uuid>",
-  "meta": { ... }
+
+  "key": "video:<uuid>",
+
+  "meta": { ... }
+
 }
 ```
 
