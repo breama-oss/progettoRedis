@@ -6,7 +6,7 @@ Mini Redis AV Server è un progetto didattico che consente di caricare file vide
 
   
 
-✨ Funzionalità principali
+## Funzionalità principali
 
   
 
