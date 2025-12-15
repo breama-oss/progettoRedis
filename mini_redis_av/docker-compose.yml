@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7
+    container_name: redis_av
+    ports:
+      - "6379:6379"
+
+  av_app:
+    build: .
+    container_name: av_processor
+    depends_on:
+      - redis
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./uploads:/app/uploads

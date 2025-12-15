@@ -1,4 +1,4 @@
-### Mini Redis AV Server Python + Flask + Redis + FFmpeg
+# Mini Redis AV Server Python + Flask + Redis + FFmpeg
 
 Mini Redis AV Server è un progetto didattico che consente di caricare file video, analizzarli tramite FFmpeg/ffprobe, generare thumbnail, salvare i metadati in Redis ed esporre una semplice interfaccia web e API REST tramite Flask.
 
@@ -22,38 +22,16 @@ Mini Redis AV Server è un progetto didattico che consente di caricare file vide
 
 - Fornire una dashboard HTML minimale
 
----
 
-## Requisiti
+## Prerequisiti
+
+Puoi avviare il progetto interamente con Docker e Docker Compose, senza installare manualmente Python, Redis o FFmpeg sul tuo sistema.
 
 Assicurati di avere installato:
 
-1. Python	≥ 3.9
+- [Docker](https://docs.docker.com/get-docker/) ≥ 24  
+- [Docker Compose](https://docs.docker.com/compose/install/) (di solito incluso con Docker Desktop)
 
-Per verificare:
-  ```bash
-	python3 --version
-  ```
-
-2. Redis	≥ 7.0
-
-  ```bash
-  redis-cli ping
-  ```
-
-3. FFmpeg ≥ 4.0
-
-```bash	
-ffmpeg -version
-```
-
-4. pip	
-
-```bash
-pip --version
-```
-
----
 
 
 ## Installazione
@@ -63,172 +41,77 @@ pip --version
 ```bash
 git clone https://github.com/breama-oss/progettoRedis.git
 
-cd progettoRedis
+cd progettoRedis/mini_redis_av
 ```
 
-2. Crea ambiente virtuale
-
-*macOS / Linux*
+2. Dopo aver aperto Docker Desktop, avvia Docker Compose:
 
 ```bash
-python3 -m venv venv
-
-source venv/bin/activate
+docker-compose up -d --build
 ```
 
-*Windows (PowerShell)*
+Questo comando:
+
+- Costruisce l’immagine del server Flask (av_processor) con tutte le dipendenze Python e FFmpeg
+
+- Avvia il container Redis (redis_av)
+
+- Avvia il container Flask/mini-server RESP (av_processor)
+
+- Espone le porte:
+
+      - 5001 → interfaccia web e API Flask
+
+      - 6379 → Redis (solo se mappata sull’host, altrimenti accessibile internamente dai container)
+
+Se la porta 5001 è occupata, puoi cambiarla nel docker-compose.yml.
+
+
+
+## Accesso all'app
+
+Dopo pochi secondi, il server Flask sarà raggiungibile sul tuo host:
 
 ```bash
-python -m venv venv
-.\venv\Scripts\Activate.ps1
+http://localhost:5001/
 ```
 
-3. Installa le dipendenze Python
+**Controllo dei log**
 
 ```bash
-pip install -r requirements.txt
+docker-compose logs -f
 ```
 
-4. Installa Redis
-
-*Windows (consigliato: WSL2)*
-
-  
-
-Redis non è supportato nativamente su Windows.
-
-Si consiglia WSL2 + Ubuntu.
-
-  
-
-- Apri PowerShell come amministratore:
-
+**Arresto dei servizi**
 ```bash
-wsl --install
+docker-compose down
 ```
 
-Riavvia Windows se richiesto.
+I file nella cartella uploads/ rimangono intatti.
 
-- Avvia Ubuntu:
-
-wsl
-
-
-- Installa Redis:
-
-```bash
-sudo apt update
-
-sudo apt install redis-server
-```
-
-
-- Avvia:
-
-```bash
-sudo service redis-server start
-```
-
-
-- Test:
-
-```bash
-redis-cli ping
-```
-
-Dovresti ottenere:
-
-```bash
-PONG
-```
-
-*macOS (Homebrew)*
-
-```bash
-brew install redis
-
-brew services start redis
-```
-
-
-- Test:
-
-```bash
-redis-cli ping
-```
-
----
 
 ## Architettura del progetto
+```bash
 mini_redis_av/
 │── http_server.py        # Server Flask con API e UI
 │── av_processor.py       # ffprobe + ffmpeg + Base64 thumb
 │── database.py           # Wrapper per Redis
 │── templates/
-
-│     ├── index.html
-
-│     ├── upload.html
-
-│     └── video\_view.html
-
+│     ├── index.html
+│     ├── upload.html
+│     └── video_view.html
 │── uploads/
-
-  
-
----
-
-## Avvio del Server
-
-Assicurati che Redis sia attivo, poi:
-
-*macOS / Linux*
-
-```bash
-source venv/bin/activate
-cd mini_redis_av
-python3 http_server.py
 ```
 
-
-*Windows PowerShell*
-
+## Upload tramite web UI
 ```bash
-.\venv\Scripts\Activate.ps1
-cd mini_redis_av
-python.exe http_server.py
-```
-
-Server attivo su:
-
-```bash
-http://127.0.0.1:5000
-```
-
-La homepage mostra:
-
-elenco video caricati
-
-  
-
-thumbnail 
-
-metadata 
-
-pulsante elimina
-
----
-
-# Upload tramite web UI
-```bash
-http://localhost:5000/upload_form
+http://localhost:5001/upload_form
 ```
 
 Oppure cliccando il pulsante "Carica"
 
----
 
-# API REST
+## API REST
 
 1. Caricare un video
 
@@ -281,18 +164,16 @@ Risposta:
 }
 ```
 
----
 
 ## Struttura delle chiavi Redis
 
 Ogni video genera:
-
-Chiave	Contenuto
-video:<uuid>	Metadata JSON
-video:<uuid>:thumb	Thumbnail Base64
-video:<uuid>:path	Percorso file locale
-
----
+```bash
+Chiave | Contenuto
+video:<uuid> | Metadata JSON
+video:<uuid>:thumb | Thumbnail Base64
+video:<uuid>:path |	Percorso file locale
+```
 
 ## Licenza
 
